@@ -34,7 +34,7 @@ Base URL: `http://localhost:8080`
 
 ## 3. Google OAuth2 Login
 
-- **POST** `http://localhost:8080/auth/oauth2/google`
+- **POST** `http://localhost:8080/oauth2/authorization/google`
 
 ### Example Request Body
 ```json
