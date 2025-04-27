@@ -6,7 +6,7 @@ Base URL: `http://localhost:8080`
 
 ## 1. Signup (Register)
 
-- **POST** `http://localhost:8080/auth/signup`
+- **POST** `http://localhost:8080/api/auth/signup`
 
 ### Example Request Body
 ```json
@@ -20,7 +20,7 @@ Base URL: `http://localhost:8080`
 
 ## 2. Normal Login
 
-- **POST** `http://localhost:8080/auth/login`
+- **POST** `http://localhost:8080/api/auth/login`
 
 ### Example Request Body
 ```json
