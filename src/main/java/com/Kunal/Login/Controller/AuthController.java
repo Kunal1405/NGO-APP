@@ -29,9 +29,4 @@ public class AuthController {
         String token = jwtService.generateToken(user);
         return new AuthResponse(token);
     }
-    @GetMapping("/oauth2/success")
-    public String oauthSuccess() {
-        return "OAuth2 login successful!";
-    }
-
 }

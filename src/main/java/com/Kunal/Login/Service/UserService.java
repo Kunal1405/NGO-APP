@@ -16,7 +16,6 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
     public void signup(SignupRequest request) {
         Optional<User> existingUser = userRepository.findByEmail(request.getEmail());
         if (existingUser.isPresent()) {
@@ -41,4 +40,21 @@ public class UserService {
 
         return user;
     }
+    public User getUserByEmail(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // FIX: If null, set totalPoints to 0
+        if (user.getTotalPoints() == null) {
+            user.setTotalPoints(0);
+            updateUser(user); // Save the fix to DB
+        }
+
+        return user;
+    }
+
+    public void updateUser(User user) {    // <-- Add this method
+        userRepository.save(user);
+    }
+
 }

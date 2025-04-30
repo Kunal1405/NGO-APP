@@ -18,6 +18,7 @@ public class User {
     private String firstName;
     private String lastName;
     private String password;
-    private String provider; // "local" or "google"
+    private String provider;
+    private Integer totalPoints = 0;// "local" or "google"
 }
 
