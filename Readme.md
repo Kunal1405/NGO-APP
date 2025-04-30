@@ -45,3 +45,6 @@ Base URL: `http://localhost:8080`
 
 ---
 
+## Postman link
+`https://.postman.co/workspace/My-Workspace~e6ca4964-033c-44b2-8e56-b2a082ca4a9b/collection/40917538-9807b6c0-74cd-45d6-a9ee-92386de20623?action=share&creator=40917538`
+
