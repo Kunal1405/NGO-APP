@@ -13,4 +13,5 @@ public class UserProfileResponse {
     private String email;
     private Integer totalPoints;
     private List<Donation> donations;
+    private  Boolean isAdmin;
 }

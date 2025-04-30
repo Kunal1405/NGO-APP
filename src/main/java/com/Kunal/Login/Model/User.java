@@ -19,6 +19,9 @@ public class User {
     private String lastName;
     private String password;
     private String provider;
-    private Integer totalPoints = 0;// "local" or "google"
+    private Integer totalPoints = 0;
+
+    private  Boolean isAdmin=false;
+    // "local" or "google"
 }
 

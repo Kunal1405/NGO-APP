@@ -28,7 +28,8 @@ public class UserProfileService {
                 user.getLastName(),
                 user.getEmail(),
                 user.getTotalPoints(),
-                donations
+                donations,
+                user.getIsAdmin()
         );
     }
 

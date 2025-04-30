@@ -49,6 +49,10 @@ public class UserService {
             user.setTotalPoints(0);
             updateUser(user); // Save the fix to DB
         }
+        if (user.getIsAdmin() == null) {
+            user.setIsAdmin(false);
+            updateUser(user); // Save the fix to DB
+        }
 
         return user;
     }
