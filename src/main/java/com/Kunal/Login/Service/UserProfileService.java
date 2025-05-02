@@ -1,5 +1,6 @@
 package com.Kunal.Login.Service;
 
+import com.Kunal.Login.Exception.UserNotExists;
 import com.Kunal.Login.Model.Donation;
 import com.Kunal.Login.Model.User;
 import com.Kunal.Login.Repositry.DonationRepository;
@@ -8,6 +9,9 @@ import com.Kunal.Login.dto.UserProfileResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -20,6 +24,9 @@ public class UserProfileService {
 
     public UserProfileResponse getProfile() {
         User user = getCurrentUser();
+        if (user == null) {
+            throw new UserNotExists("Unauthorized. Wrong jwt token.");
+        }
 
         List<Donation> donations = donationRepository.findByUserId(user.getId());
 
@@ -35,6 +42,13 @@ public class UserProfileService {
 
     public String donate(DonationRequest request) {
         User user = getCurrentUser();
+        if (user == null) {
+            throw new UserNotExists("Unauthorized: Wrong jwt token.");
+        }
+
+        if (request.getDonationAmount() <= 0) {
+            throw new IllegalArgumentException("Donation amount must be greater than zero.");
+        }
 
         int pointsEarned = (int) (request.getDonationAmount() / 10);
 
@@ -53,8 +67,18 @@ public class UserProfileService {
     }
 
     private User getCurrentUser() {
-       Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        System.out.println(principal);
-        return (User)principal;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated() ||
+                authentication instanceof AnonymousAuthenticationToken) {
+            return null;
+        }
+
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof User) {
+            return (User) principal;
+        } else {
+            throw new RuntimeException("Invalid user principal type: " + principal.getClass().getName());
+        }
     }
 }

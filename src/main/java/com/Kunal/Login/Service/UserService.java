@@ -1,5 +1,8 @@
 package com.Kunal.Login.Service;
 
+import com.Kunal.Login.Exception.UserAlreadyExists;
+import com.Kunal.Login.Exception.UserNotExists;
+import com.Kunal.Login.Exception.WrongLoginCredentials;
 import com.Kunal.Login.Model.User;
 import com.Kunal.Login.Repositry.UserRepository;
 import com.Kunal.Login.dto.LoginRequest;
@@ -19,7 +22,7 @@ public class UserService {
     public void signup(SignupRequest request) {
         Optional<User> existingUser = userRepository.findByEmail(request.getEmail());
         if (existingUser.isPresent()) {
-            throw new RuntimeException("User already exists");
+            throw new UserAlreadyExists("User already exists");
         }
 
         User user = new User();
@@ -32,17 +35,17 @@ public class UserService {
 
     public User authenticate(LoginRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("Invalid email or password"));
+                .orElseThrow(() -> new WrongLoginCredentials("Invalid email "));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid email or password");
+            throw new WrongLoginCredentials("Invalid  password");
         }
 
         return user;
     }
     public User getUserByEmail(String email) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotExists("User not found"));
 
         // FIX: If null, set totalPoints to 0
         if (user.getTotalPoints() == null) {

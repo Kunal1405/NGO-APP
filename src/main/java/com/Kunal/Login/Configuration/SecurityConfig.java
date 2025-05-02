@@ -35,6 +35,7 @@ package com.Kunal.Login.Configuration;
 //    }
 //}
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -73,6 +74,29 @@ public class SecurityConfig {
 //
 //        return http.build();
 //    }
+//@Bean
+//public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//    return http
+//            .csrf(csrf -> csrf.disable())
+//            .authorizeHttpRequests(auth -> auth
+//                    .requestMatchers("/api/auth/**", "/oauth2/**").permitAll()
+//                    .anyRequest().authenticated()
+//            )
+//            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+//            .oauth2Login(oauth2 -> oauth2
+//                    .successHandler(oAuth2LoginSuccessHandler) // <-- add this line
+//            )
+//            .build();
+//}
+//
+//
+//
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
+//}
 @Bean
 public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     return http
@@ -81,15 +105,20 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
                     .requestMatchers("/api/auth/**", "/oauth2/**").permitAll()
                     .anyRequest().authenticated()
             )
+            .exceptionHandling(ex -> ex
+                    .authenticationEntryPoint((request, response, authException) -> {
+                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        response.setContentType("application/json");
+                        response.getWriter().write("{\"error\": \"Unauthorized or invalid token.\"}");
+                    })
+            )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
             .oauth2Login(oauth2 -> oauth2
-                    .successHandler(oAuth2LoginSuccessHandler) // <-- add this line
+                    .successHandler(oAuth2LoginSuccessHandler)
             )
             .build();
 }
-
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {
