@@ -1,5 +1,6 @@
 package com.Kunal.Login.Controller;
 
+import com.Kunal.Login.Model.Donation;
 import com.Kunal.Login.Service.UserProfileService;
 import com.Kunal.Login.dto.DonationRequest;
 import com.Kunal.Login.dto.UserProfileResponse;
@@ -7,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
@@ -25,5 +28,9 @@ public class UserProfileController {
     public ResponseEntity<String> donate(@RequestBody DonationRequest request) {
         return ResponseEntity.ok(userProfileService.donate(request));
     }
+    @GetMapping("/profile/donations")
+
+    public ResponseEntity<List<Donation>> getDonations() {return ResponseEntity.ok(
+            userProfileService.getDonations());} //List<Donation>>
 }
 

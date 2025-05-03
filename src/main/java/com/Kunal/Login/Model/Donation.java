@@ -13,6 +13,7 @@ public class Donation {
     private Long id;
 
     private Long userId;
+    private String NgoName;
     private Double donationAmount;
     private LocalDateTime donationDate;
     private Integer pointsEarned;

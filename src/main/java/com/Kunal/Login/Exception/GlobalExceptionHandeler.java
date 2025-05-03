@@ -46,4 +46,14 @@ public class GlobalExceptionHandeler extends ResponseEntityExceptionHandler {
         );
         return  new ResponseEntity<>(errorResponseDto,HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(DonationsNotExists.class)
+    public ResponseEntity<ErrorResponseDto> handleDonationsNotExists(DonationsNotExists donationsNotExists, WebRequest webRequest){
+        ErrorResponseDto errorResponseDto=new ErrorResponseDto(
+                webRequest.getDescription(false),
+                HttpStatus.BAD_REQUEST,
+                donationsNotExists.getMessage(),
+                LocalDateTime.now()
+        );
+        return  new ResponseEntity<>(errorResponseDto,HttpStatus.BAD_REQUEST);
+    }
 }
