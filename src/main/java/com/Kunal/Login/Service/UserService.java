@@ -27,6 +27,8 @@ public class UserService {
 
         User user = new User();
         user.setEmail(request.getEmail());
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setProvider("LOCAL");
 
